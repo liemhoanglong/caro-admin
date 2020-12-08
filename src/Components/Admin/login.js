@@ -129,18 +129,18 @@ export default function LogIn() {
                         >
                             Sign In
                         </Button>
-                        <Grid container style={{marginTop: 10}}>
-                            <Grid item xs>
-                                <Link to="/login" variant="body2">
-                                    Forgot password?
-                                </Link>
-                            </Grid>
-                            <Grid item>
-                                <Link to="/register" variant="body2">
-                                    Don't have an account? Register
-                                </Link>
-                            </Grid>
-                        </Grid>
+                        {/*<Grid container style={{marginTop: 10}}>*/}
+                        {/*    <Grid item xs>*/}
+                        {/*        <Link to="/login" variant="body2">*/}
+                        {/*            Forgot password?*/}
+                        {/*        </Link>*/}
+                        {/*    </Grid>*/}
+                        {/*    <Grid item>*/}
+                        {/*        <Link to="/register" variant="body2">*/}
+                        {/*            Don't have an account? Register*/}
+                        {/*        </Link>*/}
+                        {/*    </Grid>*/}
+                        {/*</Grid>*/}
                     </form>
                 </div>
             </Container>
