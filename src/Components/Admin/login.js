@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Avatar, Button, Container, CssBaseline, TextField, Grid, Typography}  from '@material-ui/core';
+import {Avatar, Button, Container, CssBaseline, TextField, Typography}  from '@material-ui/core';
 import { makeStyles} from '@material-ui/core/styles';
 import {Redirect, Link} from "react-router-dom";
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
@@ -8,6 +8,8 @@ import Collapse from "@material-ui/core/Collapse";
 import IconButton from "@material-ui/core/IconButton";
 import Alert from '@material-ui/lab/Alert';
 import CloseIcon from '@material-ui/icons/Close';
+
+import userAPI from '../../Util/userAPI'
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -30,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function LogIn() {
+export default function LogIn(props) {
     const [input, setInput] = useState({
         user: "",
         password: "",
@@ -60,6 +62,11 @@ export default function LogIn() {
             {
                 //direct
                 setIsLogin(true);
+                const res = await userAPI.profile();
+                res.data.err ?
+                    props.setLoginState({isLogin: false, user: null})
+                    :
+                    props.setLoginState({isLogin: true, user: res.data.user})
             }
         }
     }
@@ -129,18 +136,6 @@ export default function LogIn() {
                         >
                             Sign In
                         </Button>
-                        {/*<Grid container style={{marginTop: 10}}>*/}
-                        {/*    <Grid item xs>*/}
-                        {/*        <Link to="/login" variant="body2">*/}
-                        {/*            Forgot password?*/}
-                        {/*        </Link>*/}
-                        {/*    </Grid>*/}
-                        {/*    <Grid item>*/}
-                        {/*        <Link to="/register" variant="body2">*/}
-                        {/*            Don't have an account? Register*/}
-                        {/*        </Link>*/}
-                        {/*    </Grid>*/}
-                        {/*</Grid>*/}
                     </form>
                 </div>
             </Container>
