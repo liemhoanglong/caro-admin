@@ -372,7 +372,7 @@ export default function EnhancedTable() {
           <DialogActions>
             <Button onClick={handleClose} color="secondary">
               Close
-                        </Button>
+            </Button>
           </DialogActions>
         </Dialog>
         : null

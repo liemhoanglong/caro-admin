@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Login from "./Components/Admin/login";
 // import Register from "./Components/Admin/register";
 import Dashboard from "./Components/Dashboard";
-import userAPI from './Util/userAPI'
+import userAPI from './Util/userAPI';
 
 const App = () => {
   const [loginState, setLoginState] = useState({ isLogin: false, user: null });

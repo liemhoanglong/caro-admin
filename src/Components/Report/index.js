@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -14,19 +14,20 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import { Link } from 'react-router-dom';
 
 import './report.css'
+import War from '../IconSVG/War';
+import gameAPI from '../../Util/gameAPI';
 
-const rows = [
-  { id: 1, player1: 'Snow', player2: 'Jon', isPlayer1Win: true },
-  { id: 2, player1: 'Lannister', player2: 'Cersei', isPlayer1Win: false },
-  { id: 3, player1: 'Lannister', player2: 'Jaime', isPlayer1Win: true },
-  { id: 4, player1: 'Stark', player2: 'Arya', isPlayer1Win: false },
-  { id: 5, player1: 'Targaryen', player2: 'Daenerys', isPlayer1Win: true },
-  { id: 6, player1: 'Melisandre', player2: 'Tom', isPlayer1Win: true },
-  { id: 7, player1: 'Clifford', player2: 'Ferrara', isPlayer1Win: true },
-  { id: 8, player1: 'Frances', player2: 'Rossini', isPlayer1Win: false },
-  { id: 9, player1: 'Roxie', player2: 'Harvey', isPlayer1Win: false },
-];
-
+// const rows = [
+//   { _id: 1, playerX: 'Snow', playerO: 'Jon', isPlayerXWin: true },
+//   { _id: 2, playerX: 'Lannister', playerO: 'Cersei', isPlayerXWin: false },
+//   { _id: 3, playerX: 'Lannister', playerO: 'Jaime', isPlayerXWin: true },
+//   { _id: 4, playerX: 'Stark', playerO: 'Arya', isPlayerXWin: false },
+//   { _id: 5, playerX: 'Targaryen', playerO: 'Daenerys', isPlayerXWin: true },
+//   { _id: 6, playerX: 'Melisandre', playerO: 'Tom', isPlayerXWin: true },
+//   { _id: 7, playerX: 'Clifford', playerO: 'Ferrara', isPlayerXWin: true },
+//   { _id: 8, playerX: 'Frances', playerO: 'Rossini', isPlayerXWin: false },
+//   { _id: 9, playerX: 'Roxie', playerO: 'Harvey', isPlayerXWin: false },
+// ];
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -92,7 +93,7 @@ function EnhancedTableHead(props) {
         ))}
         <StyledTableCell key='10' align={'right'} style={{ paddingRight: 30 }}>
           View
-                </StyledTableCell>
+        </StyledTableCell>
       </TableRow>
     </TableHead>
   );
@@ -152,10 +153,29 @@ const StyledTableRow = withStyles((theme) => ({
 //     return (<Redirect to={`/game/${id}`}/>)
 // };
 
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>RETURN<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 export default function Report(props) {
   const classes = useStyles();
+
+  const [reset, setReset] = useState(false);
+  const [rows, setRows] = useState([]); 
+  // console.log(rows)
+
+  useEffect(() => {
+    const fetchAll = async () => {
+      try {
+        const res = await gameAPI.getAll();
+        setRows(res.data);
+      } catch (error) {
+        console.log('Failed to fetch: ', error);
+      }
+    } 
+    fetchAll();
+  }, [reset])
+
+  //-----------------------------------
   const [order, setOrder] = useState('asc');
-  const [orderBy, setOrderBy] = useState('calories');
+  const [orderBy, setOrderBy] = useState('id');
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -194,41 +214,28 @@ export default function Report(props) {
               {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const labelId = `enhanced-table-checkbox-${index}`;
                   return (
                     <StyledTableRow
                       hover
                       tabIndex={-1}
                       key={index}
                     >
-                      <TableCell>{row.id}</TableCell>
+                      <TableCell>{row._id}</TableCell>
                       <TableCell>
-                        {row.player1}
-                        <svg style={{ margin: '0px 10px', color: 'red' }} id="Layer_1" enableBackground="new 0 0 512 512" height="20" viewBox="0 0 512 512" width="20" xmlns="http://www.w3.org/2000/svg">
-                          <path d="m497 60.445h.01z" />
-                          <g>
-                            <path d="m497 0h-45.445c-3.979 0-7.794 1.58-10.606 4.394l-290.896 290.895 66.658 66.658 290.895-290.896c2.814-2.813 4.394-6.628 4.394-10.607v-45.444c0-8.284-6.716-15-15-15z" />
-                            <path d="m59.792 385.693c-8.902 8.902-13.637 20.537-14.081 32.272-11.592.324-23.087 4.897-31.935 13.744-18.367 18.367-18.367 48.147 0 66.515 18.367 18.367 48.147 18.367 66.515 0 8.794-8.794 13.366-20.205 13.739-31.726 11.523-.372 22.935-4.948 31.73-13.743l27.24-27.241-66.515-66.514z" />
-                            <path d="m272.446 306.798h94.268v25.564h-94.268z" transform="matrix(.707 -.707 .707 .707 -132.374 319.58)" />
-                            <path d="m168.129 234.786 66.658-66.658-163.735-163.734c-2.813-2.814-6.628-4.394-10.607-4.394h-45.445c-8.284 0-15 6.716-15 15v45.444c0 3.979 1.58 7.794 4.394 10.606z" />
-                            <path d="m466.29 417.966c-.444-11.735-5.18-23.371-14.081-32.272l-26.694-26.694-66.515 66.514 27.241 27.241c8.795 8.795 20.207 13.371 31.73 13.743.373 11.521 4.945 22.932 13.739 31.726 18.367 18.367 48.147 18.367 66.515 0 18.367-18.367 18.367-48.147 0-66.515-8.848-8.846-20.343-13.419-31.935-13.743z" />
-                            <path d="m443.349 277.527c-5.858-5.858-15.356-5.857-21.213 0l-144.609 144.608c-5.858 5.857-5.858 15.356 0 21.213 5.857 5.857 15.355 5.857 21.213 0l144.609-144.608c5.858-5.857 5.858-15.355 0-21.213z" />
-                            <path d="m89.864 277.527c-5.857-5.857-15.355-5.858-21.213 0s-5.858 15.355 0 21.213l144.609 144.608c5.857 5.857 15.356 5.857 21.213 0 5.858-5.857 5.858-15.355 0-21.213z" />
-                          </g>
-                        </svg>
-                        {row.player2}
+                        {row.playerX.username + ' '}
+                          <War style={{padding:5}} width='20px' height='20px'/>
+                        {' ' + row.playerO.username}
                       </TableCell>
-                      <TableCell>{row.isPlayer1Win ? row.player1 : row.player2}</TableCell>
+                      <TableCell>{row.isPlayerXWin ? row.playerX.username : row.playerO.username}</TableCell>
                       <TableCell align={'right'}>
-                        {/* <Button onClick={() => handleClick(row.id)}> */}
-                        <Link to={`/game/${row.id}`} className='view'>
+                        <Link to={`/game/${row._id}`} className='view'>
                           <VisibilityIcon className='view-icon' style={{ color: 'gray' }} />
                         </Link>
-                        {/* </Button> */}
                       </TableCell>
                     </StyledTableRow>
                   );
-                })}
+                })
+              }
             </TableBody>
           </Table>
         </TableContainer>
@@ -241,8 +248,12 @@ export default function Report(props) {
           onChangePage={handleChangePage}
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
-      </Paper>
-
+      </Paper> 
+      {/* {
+        rows.map((row,i)=>{
+          return <li key={i}>{row._id}</li>
+        })
+      } */}
     </div >
   );
 }

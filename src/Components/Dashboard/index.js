@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -16,7 +16,7 @@ import Paper from '@material-ui/core/Paper';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 // import NotificationsIcon from '@material-ui/icons/Notifications';
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import './dashboard.css';
 // import { mainListItems, secondaryListItems } from './listItems';
@@ -28,7 +28,6 @@ import Control from './Control';
 import Report from '../Report';
 import Profile from '../Profile';
 import Game from '../Game';
-import userAPI from '../../Util/userAPI';
 import { logoutService } from "../Admin/Service/authService";
 
 function Copyright() {
