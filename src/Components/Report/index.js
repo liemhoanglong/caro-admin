@@ -193,7 +193,6 @@ export default function Report(props) {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>

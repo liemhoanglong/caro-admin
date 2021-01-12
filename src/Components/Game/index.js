@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Grid, GridList, Button, Switch, Box, Container } from '@material-ui/core';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
 
 import './game.css';
 import Board from './board'
@@ -17,7 +20,7 @@ export default function Game(props) {
   const [xIsNext, setXIsNext] = useState(true);
   const [isDes, setIsDes] = useState(true);
   const [data, setData] = useState();
-
+  console.log(data);
   useEffect(() => {
     const fetchAll = async () => {
       try {
@@ -64,7 +67,7 @@ export default function Game(props) {
     return ': row ' + r + ' col ' + c
   }
 
-  if (history){
+  if (history) {
     const current = history[stepNumber];
     const winner = calculateWinner(current.squares, current.location, size);
     const moves = history.map((step, move) => {
@@ -78,7 +81,17 @@ export default function Game(props) {
         </Button>
       );
     });
-  
+
+    const msg = data.chat.map((item, i) => {
+      return (
+        <Typography style={{width:"100%", height:"auto"}} variant="subtitle1">
+          <div key={i} variant="body2" gutterBottom >
+            <b>{item.username}: </b>{item.data}
+          </div>
+        </Typography>
+      )
+    })
+
     let status;
     if (winner) {
       status = 'Winner: ' + winner.square;
@@ -87,14 +100,7 @@ export default function Game(props) {
     } else {
       status = 'Next player: ' + (xIsNext ? 'X' : 'O');
     }
-  
-    const location = (move, size) => {
-      let r = Math.floor((move) / size) + 1
-      let c = Math.floor((move) % size) + 1
-      return [r, c]
-    }
-  
-  
+
     return (
       <>
         {
@@ -141,7 +147,9 @@ export default function Game(props) {
                   <Container>
                     <h2>Chat</h2>
                     <GridList cellHeight={160}>
-                      <h3>hello</h3>
+                      <div style={{ width: '100%' }}>
+                        {msg}
+                      </div>
                     </GridList>
                   </Container>
                 </Grid>
@@ -150,9 +158,9 @@ export default function Game(props) {
             : null
         }
       </>
-  
+
     )
   }
   else return <></>
-  
+
 }

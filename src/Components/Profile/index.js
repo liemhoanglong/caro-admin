@@ -44,6 +44,7 @@ export default function Profile(props) {
 
   return (
     <Grid container spacing={3}>
+      <Grid item md={3} xs={0}></Grid>
       <Grid item md={6} xs={12}>
         <h1>Edit profile</h1>
         <form onSubmit={handleEditProfile}>
@@ -102,7 +103,7 @@ export default function Profile(props) {
           </Button>
         </form>
       </Grid>
-      <Grid item md={6} xs={12}>
+      {/* <Grid item md={6} xs={12}>
         <h1>Change password</h1>
         <form onSubmit={handleChangePass}>
           <TextField
@@ -142,7 +143,7 @@ export default function Profile(props) {
             Change password
           </Button>
         </form>
-      </Grid>
+      </Grid> */}
     </Grid>
   )
 }

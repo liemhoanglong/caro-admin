@@ -208,12 +208,12 @@ export default function Dashboard(props) {
           <Grid container spacing={3}>
             {props.type === 1 ?
               <>
-                <Grid item xs={12} md={8} lg={9}>
+                <Grid item xs={12}>
                   <Paper className={fixedHeightPaper}>
                     <Chart />
                   </Paper>
                 </Grid>
-                <Grid item xs={12} md={4} lg={3}>
+                {/* <Grid item xs={12} md={4} lg={3}>
                   <Paper className={fixedHeightPaper}>
                     <Deposits />
                   </Paper>
@@ -222,7 +222,7 @@ export default function Dashboard(props) {
                   <Paper className={classes.paper}>
                     <Orders />
                   </Paper>
-                </Grid>
+                </Grid> */}
               </>
               : props.type === 2 ?
                 <Grid item xs={12}>

@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTheme } from '@material-ui/core/styles';
 import { LineChart, Line, XAxis, YAxis, Label, ResponsiveContainer } from 'recharts';
+
 import Title from './Title';
+import gameAPI from '../../Util/gameAPI';
 
 // Generate Sales Data
 function createData(time, amount) {
@@ -17,18 +19,52 @@ const data = [
     createData('15:00', 2000),
     createData('18:00', 2400),
     createData('21:00', 2400),
-    createData('24:00', undefined),
+    createData('24:00', 0),
 ];
 
 export default function Chart() {
     const theme = useTheme();
+    const [rows, setRows] = useState([]);
+    console.log(rows)
+    // console.log(data)
+    useEffect(() => {
+        const fetchAll = async () => {
+            try {
+                const res = await gameAPI.getAll();
+                setRows(countFreq(res.data));
+            } catch (error) {
+                console.log('Failed to fetch: ', error);
+            }
+        }
+        fetchAll();
+    }, [])
+
+    function countFreq(arr) {
+        let a = [], b = [], prev;
+        for (let i = 0; i < arr.length; i++) {
+            if (!arr[i].gamePlay.includes(prev)) {
+                a.push(arr[i].gamePlay.slice(0, 10));
+                b.push(1);
+            } else {
+                b[b.length - 1]++;
+            }
+            prev = arr[i].gamePlay.slice(0, 10);
+        }
+        console.log([a, b])
+        let result=[];
+        for(let i = 0; i < a.length; i++){
+            result.push(createData(a[i], b[i]))
+        }
+        console.log(result)
+        return result;
+    }
 
     return (
         <React.Fragment>
-            <Title>Today</Title>
+            <Title>Total room per day</Title>
             <ResponsiveContainer>
                 <LineChart
-                    data={data}
+                    data={rows}
                     margin={{
                         top: 16,
                         right: 16,
@@ -43,7 +79,7 @@ export default function Chart() {
                             position="left"
                             style={{ textAnchor: 'middle', fill: theme.palette.text.primary }}
                         >
-                            Sales ($)
+                            Room
                         </Label>
                     </YAxis>
                     <Line type="monotone" dataKey="amount" stroke={theme.palette.primary.main} dot={false} />
