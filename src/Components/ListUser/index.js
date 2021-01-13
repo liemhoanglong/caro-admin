@@ -334,7 +334,7 @@ export default function EnhancedTable() {
       {profile ?
         <Dialog
           fullWidth={true}
-          maxWidth='lg'
+          maxWidth='md'
           open={open}
           onClose={handleClose}
           aria-labelledby="alert-dialog-title"
@@ -359,7 +359,7 @@ export default function EnhancedTable() {
                     <span style={{ fontSize: '20px' }}>Email: {' ' + profile.user.email}</span>
                   </Grid>
                   <Grid item xs={12}>
-                    <span style={{ fontSize: '20px' }}>Elo: 1000</span>
+                    <span style={{ fontSize: '20px' }}>Elo: {' ' + profile.user.elo}</span>
                   </Grid>
                 </Grid>
               </Grid>

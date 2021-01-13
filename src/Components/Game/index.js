@@ -10,6 +10,7 @@ import Player from "./player";
 import calculateWinner from "./gameCheck";
 import War from '../IconSVG/War';
 import gameAPI from '../../Util/gameAPI'
+import userAPI from '../../Util/userAPI'
 
 const size = 20;
 
@@ -20,7 +21,10 @@ export default function Game(props) {
   const [xIsNext, setXIsNext] = useState(true);
   const [isDes, setIsDes] = useState(true);
   const [data, setData] = useState();
-  console.log(data);
+  const [user, setUser] = useState();
+  // console.log(data);
+  console.log(user);
+
   useEffect(() => {
     const fetchAll = async () => {
       try {
@@ -34,6 +38,19 @@ export default function Game(props) {
     }
     fetchAll();
   }, [])
+
+  console.log(user)
+  useEffect(() => {
+    const fetchAll = async () => {
+      try {
+        const res = await userAPI.getAll();
+        setUser(res.data.filter(item => item.id === data.playerX.userID || item.id === data.playerO.userID));
+      } catch (error) {
+        console.log('Failed to fetch: ', error);
+      }
+    }
+    fetchAll();
+  }, [data])
 
   const handleClick = (i) => {
     // const history2 = history.slice(0, stepNumber + 1);
@@ -108,13 +125,13 @@ export default function Game(props) {
             <Grid container spacing={3} className="game">
               <Grid item xs={3}>
                 <Grid item xs={12}>
-                  <Player elo={1500} username={data.playerX.username} type={"X"} />
+                  <Player elo={user ? (data.playerX.userID === user[0].id ? user[0].elo : user[1].elo) : 1500} username={data.playerX.username} type={"X"} />
                 </Grid>
                 <div style={{ textAlign: 'center', padding: 20 }}>
                   <War width='100px' height='100px' />
                 </div>
                 <Grid item xs={12}>
-                  <Player elo={1450} username={data.playerO.username} type={"O"} />
+                  <Player elo={user ? (data.playerO.userID === user[1].id ? user[1].elo : user[0].elo) : 1400} username={data.playerO.username} type={"O"} />
                 </Grid>
               </Grid>
               <Grid item xs={6}>

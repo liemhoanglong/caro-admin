@@ -56,9 +56,10 @@ function stableSort(array, comparator) {
 }
 
 const headCells = [
-  { id: 'id', numeric: false, disablePadding: false, label: 'ID' },
+  { id: 'id', numeric: false, disablePadding: false, label: 'Id' },
+  { id: 'date', numeric: false, disablePadding: false, label: 'Date' },
   { id: 'player1vsplayer2', numeric: false, disablePadding: false, label: 'Player 1 Vs Player 2' },
-  { id: 'isPlayer1Win', numeric: false, disablePadding: false, label: 'Winner' },
+  { id: 'result', numeric: false, disablePadding: false, label: 'Result' },
 ];
 
 function EnhancedTableHead(props) {
@@ -159,7 +160,7 @@ export default function Report(props) {
 
   const [reset, setReset] = useState(false);
   const [rows, setRows] = useState([]); 
-  // console.log(rows)
+  console.log(rows)
 
   useEffect(() => {
     const fetchAll = async () => {
@@ -193,6 +194,7 @@ export default function Report(props) {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
@@ -220,12 +222,15 @@ export default function Report(props) {
                       key={index}
                     >
                       <TableCell>{row._id}</TableCell>
+                      <TableCell>{row.gamePlay.slice(0, 10)}</TableCell>
+                      {/* <TableCell>{row._id}</TableCell> */}
                       <TableCell>
                         {row.playerX.username + ' '}
                           <War style={{padding:5}} width='20px' height='20px'/>
                         {' ' + row.playerO.username}
                       </TableCell>
-                      <TableCell>{row.isPlayerXWin ? row.playerX.username : row.playerO.username}</TableCell>
+                      <TableCell>{row.result === "X" ? "player1" : row.result === "O" ? "player2" : "Draw"}</TableCell>
+                      {/* <TableCell>{row.isPlayerXWin ? row.playerX.username : row.playerO.username}</TableCell> */}
                       <TableCell align={'right'}>
                         <Link to={`/game/${row._id}`} className='view'>
                           <VisibilityIcon className='view-icon' style={{ color: 'gray' }} />
