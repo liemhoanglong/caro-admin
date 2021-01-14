@@ -12,6 +12,9 @@ import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Paper from '@material-ui/core/Paper';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import { Link } from 'react-router-dom';
+import TextField from '@material-ui/core/TextField';
+import IconButton from '@material-ui/core/IconButton';
+import SearchIcon from '@material-ui/icons/Search';
 
 import './report.css'
 import War from '../IconSVG/War';
@@ -160,6 +163,7 @@ export default function Report(props) {
 
   const [reset, setReset] = useState(false);
   const [rows, setRows] = useState([]); 
+  const [rowsCopy, setRowsCopy] = useState([]); 
   console.log(rows)
 
   useEffect(() => {
@@ -167,6 +171,7 @@ export default function Report(props) {
       try {
         const res = await gameAPI.getAll();
         setRows(res.data);
+        setRowsCopy(res.data);
       } catch (error) {
         console.log('Failed to fetch: ', error);
       }
@@ -195,9 +200,37 @@ export default function Report(props) {
     setPage(0);
   };
 
+  //--------------------find user-----------------
+  const [input, setInput] = useState('');
+  const handleChange = e => {
+    setInput(e.target.value);
+  };
+  const findUser = (txt) => {
+    // const res = rowsCopy.filter(row => console.log(row.playerX.username + " " +row.playerO.username + " " + row._id))
+    const res = rowsCopy.filter(row => row.playerX.username.toLowerCase().includes(txt.toLowerCase()) || row.playerO.username.toLowerCase().includes(txt.toLowerCase()))
+    setRows(res)
+  };
+  const onSubmit = (event) => {
+    event.preventDefault();
+  }
+
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
+        <form onSubmit={onSubmit} style={{ textAlign: 'right' }}>
+          <TextField
+            size="small"
+            variant="outlined"
+            margin="normal"
+            placeholder="Search name or email"
+            value={input}
+            onChange={handleChange}
+            style={{ margin: 4 }}
+          />
+          <IconButton type="submit" onClick={() => findUser(input)}>
+            <SearchIcon />
+          </IconButton>
+        </form>
         <TableContainer>
           <Table
             className={classes.table}
