@@ -28,7 +28,7 @@ export default function Control(props) {
         </ListItem>
       </Link>
       <Link to='/profile' style={{ textDecoration: 'none', color: '#212121' }}>
-        <ListItem button>
+        <ListItem button style={props.type === 3 ? { backgroundColor: '#cfd8dc' } : null}>
           <ListItemIcon>
             <PersonIcon />
           </ListItemIcon>
@@ -36,7 +36,7 @@ export default function Control(props) {
         </ListItem>
       </Link>
       <Link to='/reports' style={{ textDecoration: 'none', color: '#212121' }}>
-        <ListItem button>
+        <ListItem button style={props.type === 4 ? { backgroundColor: '#cfd8dc' } : null}>
           <ListItemIcon>
             <BarChartIcon />
           </ListItemIcon>
